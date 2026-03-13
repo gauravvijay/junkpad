@@ -1,0 +1,414 @@
+/* ===== Shared ===== */
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+}
+
+.submitBtn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 36px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 3px 8px rgba(76, 175, 80, 0.3);
+}
+.submitBtn:hover:not(:disabled) {
+  background: #43a047;
+  transform: translateY(-1px);
+}
+.submitBtn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.correct {
+  background-color: #c8e6c9 !important;
+  border-color: #4CAF50 !important;
+}
+.wrong {
+  background-color: #ffcdd2 !important;
+  border-color: #f44336 !important;
+}
+
+.answerReveal {
+  font-size: 16px;
+  color: #333;
+  background: #fff9c4;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1px solid #fdd835;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.numberInput {
+  font-size: 22px;
+  padding: 10px 16px;
+  border: 3px solid #90caf9;
+  border-radius: 12px;
+  text-align: center;
+  width: 160px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.numberInput:focus {
+  border-color: #2196F3;
+}
+
+.hint {
+  font-size: 13px;
+  color: #888;
+  font-style: italic;
+}
+
+/* ===== Place Value ===== */
+.numberBadges {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.badge {
+  background: #2196F3;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 14px;
+  font-size: 26px;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+}
+.matchGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 400px;
+}
+.matchRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  background: #fafafa;
+  transition: background 0.2s;
+}
+.matchLabel {
+  font-size: 18px;
+  font-weight: 600;
+}
+.selectInput {
+  font-size: 16px;
+  padding: 6px 12px;
+  border: 2px solid #90caf9;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ===== Pencil Fraction ===== */
+.pencilGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  width: 100%;
+  max-width: 600px;
+}
+.pencilSet {
+  border: 3px solid #e0e0e0;
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, transform 0.15s;
+  text-align: center;
+}
+.pencilSet:hover {
+  border-color: #90caf9;
+  transform: scale(1.02);
+}
+.pencilSetSelected {
+  border-color: #2196F3 !important;
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+}
+.pencilSetLabel {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #666;
+}
+.pencilRow {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+.pencil {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 16px;
+}
+.pencilTip {
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
+.pencilBlack .pencilTip {
+  border-bottom: 10px solid #333;
+}
+.pencilWhite .pencilTip {
+  border-bottom: 10px solid #bbb;
+}
+.pencilBody {
+  width: 12px;
+  height: 32px;
+  border-radius: 0 0 2px 2px;
+}
+.pencilBlack .pencilBody {
+  background: #333;
+}
+.pencilWhite .pencilBody {
+  background: #e0e0e0;
+  border: 1px solid #ccc;
+}
+.pencilEraser {
+  width: 12px;
+  height: 6px;
+  border-radius: 0 0 3px 3px;
+  background: #e91e63;
+}
+.pencilCount {
+  font-size: 13px;
+  color: #888;
+}
+
+/* ===== Order Numbers (Drag) ===== */
+.dragList {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.dragItem {
+  background: #fff;
+  border: 3px solid #90caf9;
+  border-radius: 14px;
+  padding: 16px 24px;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.dragItem:active {
+  cursor: grabbing;
+  transform: scale(1.08);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+.correctOrderLabel {
+  font-size: 15px;
+  color: #555;
+  margin-top: 4px;
+}
+
+/* ===== Sequence ===== */
+.sequenceRow {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.sequenceNum {
+  background: #e3f2fd;
+  border: 2px solid #90caf9;
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1565c0;
+}
+.sequenceBlank {
+  background: #fff9c4;
+  border: 3px dashed #fdd835;
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #f57f17;
+}
+
+/* ===== Multiple Choice ===== */
+.mcOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+}
+.mcOption {
+  border: 3px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 18px;
+  background: white;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.mcOption:hover:not(:disabled) {
+  border-color: #90caf9;
+  transform: translateX(4px);
+}
+.mcSelected {
+  border-color: #2196F3 !important;
+  background: #e3f2fd !important;
+}
+
+/* ===== Fraction Input ===== */
+.fractionVisual {
+  width: 100%;
+  max-width: 420px;
+}
+.fractionBar {
+  display: flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid #333;
+  height: 40px;
+}
+.fractionSlice {
+  flex: 1;
+  border-right: 1px solid rgba(0, 0, 0, 0.15);
+}
+.fractionSlice:last-child {
+  border-right: none;
+}
+.sliceHorse1 { background: #ff9800; }
+.sliceHorse2 { background: #2196F3; }
+.sliceRemaining { background: #e0e0e0; }
+.fractionLegend {
+  display: flex;
+  gap: 14px;
+  margin-top: 8px;
+  font-size: 14px;
+  flex-wrap: wrap;
+}
+.legendHorse1 { color: #e65100; }
+.legendHorse2 { color: #1565c0; }
+.legendRemaining { color: #666; }
+.fractionInputRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 22px;
+  font-weight: 700;
+}
+.fractionNumerator { width: 80px !important; }
+.fractionSlash { font-size: 22px; color: #333; }
+
+/* ===== Clock ===== */
+.clockContainer { display: flex; justify-content: center; }
+.clockSvg { filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.12)); }
+.timeInputRow { display: flex; align-items: center; gap: 6px; }
+.timeInput { width: 70px !important; }
+.timeColon { font-size: 28px; font-weight: 700; }
+
+/* ===== Number Line ===== */
+.numberLineContainer { width: 100%; max-width: 620px; }
+.numberLineSvg { display: block; }
+.midpointInfo { text-align: center; font-size: 16px; color: #555; }
+
+/* ===== Sudoku ===== */
+.sudokuInfo { font-size: 16px; color: #555; }
+.sudokuGrid { border-collapse: collapse; }
+.sudokuCell {
+  width: 80px; height: 70px;
+  border: 2px solid #333;
+  text-align: center;
+  font-size: 22px; font-weight: 700;
+  position: relative;
+}
+.sudokuGap { background: #fff9c4; }
+.sudokuInput {
+  width: 60px; height: 40px;
+  font-size: 20px; text-align: center;
+  border: 2px solid #90caf9; border-radius: 6px; outline: none;
+}
+.sudokuInput:focus { border-color: #2196F3; }
+.sudokuCorrectVal {
+  font-size: 12px; color: #4CAF50;
+  position: absolute; bottom: 2px; right: 6px;
+}
+.sudokuSum {
+  font-size: 14px; color: #999;
+  padding-left: 8px; border: none; font-weight: 600;
+}
+.sudokuColSum {
+  font-size: 14px; color: #999;
+  text-align: center; padding-top: 4px; border: none; font-weight: 600;
+}
+
+/* ===== Graph Apples ===== */
+.graphContainer {
+  width: 100%; max-width: 520px;
+  background: #fafafa;
+  border: 2px solid #e0e0e0; border-radius: 14px; padding: 18px;
+}
+.graphYLabel { text-align: center; font-size: 13px; color: #888; margin-bottom: 4px; font-weight: 600; }
+.graphXLabel { text-align: center; font-size: 13px; color: #888; margin-top: 4px; font-weight: 600; }
+.graphChart { display: flex; height: 200px; }
+.graphYAxis {
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding-right: 6px; font-size: 12px; color: #999;
+}
+.graphYTick { text-align: right; height: 0; line-height: 0; }
+.graphBars {
+  flex: 1; display: flex;
+  align-items: flex-end; gap: 8px;
+  border-left: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  padding: 0 10px;
+}
+.graphBarCol {
+  flex: 1; display: flex;
+  flex-direction: column;
+  align-items: center; justify-content: flex-end;
+  height: 100%;
+}
+.graphBar {
+  width: 100%; max-width: 48px;
+  border-radius: 6px 6px 0 0;
+  display: flex; align-items: flex-start; justify-content: center;
+  transition: height 0.3s; min-height: 12px;
+}
+.graphBarValue { color: white; font-size: 12px; font-weight: 700; margin-top: 4px; }
+.graphBarLabel { font-size: 13px; font-weight: 600; margin-top: 4px; color: #555; }
+.graphQuestions { display: flex; flex-direction: column; gap: 14px; width: 100%; max-width: 520px; }
+.graphQuestion { display: flex; flex-direction: column; gap: 6px; }
+.graphQuestion label { font-size: 15px; }
+
+/* ===== Minecraft ===== */
+.minecraftVisual { text-align: center; }
+.minecraftSvg { border: 2px solid #e0e0e0; border-radius: 12px; background: #e8f5e9; }
+.minecraftDimensions { margin-top: 8px; font-size: 18px; font-weight: 700; color: #2e7d32; }
+
+/* ===== Shape Perimeter ===== */
+.shapeVisual { display: flex; justify-content: center; }
+.shapeSvg { filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1)); }
