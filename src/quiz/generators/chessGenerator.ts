@@ -138,7 +138,7 @@ interface ClickScenario {
 const CLICK_SCENARIOS: ClickScenario[] = [
   {
     mode: "clickable",
-    prompt: "Enemy rook ♜ is at C3. Red squares are under attack. Tap any SAFE square on the board.",
+    prompt: "Enemy rook ♜ is at C3. Tap any SAFE square on the board.",
     size: 6,
     pieces: [{ sq: "C3", piece: "r" }],
     attackSquares: ["A3","B3","D3","E3","F3","C1","C2","C4","C5","C6"],
@@ -148,7 +148,7 @@ const CLICK_SCENARIOS: ClickScenario[] = [
   },
   {
     mode: "clickable",
-    prompt: "Enemy rook ♜ is at D4. Red squares are dangerous. Tap any SAFE square on the board.",
+    prompt: "Enemy rook ♜ is at D4. Tap any SAFE square on the board.",
     size: 6,
     pieces: [{ sq: "D4", piece: "r" }],
     attackSquares: ["A4","B4","C4","E4","F4","D1","D2","D3","D5","D6"],
@@ -182,7 +182,7 @@ const CLICK_SCENARIOS: ClickScenario[] = [
   },
   {
     mode: "clickable",
-    prompt: "Enemy queen ♛ at E5 attacks rows, columns AND diagonals (red). Tap a SAFE square.",
+    prompt: "Enemy queen ♛ at E5 attacks rows, columns AND diagonals. Tap a SAFE square.",
     size: 6,
     pieces: [{ sq: "E5", piece: "q" }],
     attackSquares: ["A5","B5","C5","D5","F5","E1","E2","E3","E4","E6",
