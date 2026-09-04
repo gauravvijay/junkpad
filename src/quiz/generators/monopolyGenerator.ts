@@ -21,11 +21,13 @@ const PROPERTIES = [
 ];
 
 const RENT_SCENARIOS = [
-  { property: "Spain",   rent: 1000, hand: [500, 500],       give: "2 × ₹500 = ₹1,000" },
-  { property: "Italy",   rent: 1500, hand: [1000, 500, 500], give: "₹1,000 + ₹500 = ₹1,500" },
-  { property: "France",  rent: 500,  hand: [1000],           give: "₹1,000 (get ₹500 change)" },
-  { property: "Germany", rent: 1000, hand: [1000, 500],      give: "₹1,000 note exactly" },
-  { property: "Brazil",  rent: 1500, hand: [1000, 1000, 500], give: "₹1,000 + ₹500 = ₹1,500" },
+  { property: "Spain",   rent: 1000, hand: [500, 500],        owner: "Papa"  },
+  { property: "Italy",   rent: 1500, hand: [1000, 500, 500],  owner: "Dadi"  },
+  { property: "France",  rent: 500,  hand: [1000],            owner: "Dadi"  },
+  { property: "Germany", rent: 1000, hand: [1000, 500],       owner: "Papa"  },
+  { property: "Brazil",  rent: 1500, hand: [1000, 1000, 500], owner: "Papa"  },
+  { property: "Egypt",   rent: 500,  hand: [500, 500],        owner: "Dadi"  },
+  { property: "India",   rent: 1000, hand: [500, 500, 500],   owner: "Dadi"  },
 ];
 
 const NOTE_PICKER_SCENARIOS = [
@@ -89,16 +91,18 @@ export function generateMonopolyQuestion(id: number): Question {
   }
 
   if (variant === 2) {
-    // MCQ: Rent scenario
+    // Note-picker: Rent scenario with papa/dadi context
     const r = pick(RENT_SCENARIOS);
-    const fmt = (n: number) => `₹${n.toLocaleString()}`;
-    const wrongOpts = [`${fmt(r.rent + 500)} (too much)`, `${fmt(r.rent - 500)} (too little)`, "Nothing — rent is optional!"];
-    const { options, correctIndex } = makeMCQOptions(r.give, wrongOpts);
+    const handDesc = (() => {
+      const counts: Record<number, number> = {};
+      r.hand.forEach(n => { counts[n] = (counts[n] || 0) + 1; });
+      return Object.entries(counts).map(([n, c]) => `${c}×₹${Number(n) >= 1000 ? Number(n)/1000+"K" : n}`).join(", ");
+    })();
     return {
-      id, type: "monopoly-mcq", category: "Monopoly Money",
-      prompt: `You land on ${r.property}. Rent is ${fmt(r.rent)}. You have: ${r.hand.map(n => fmt(n)).join(", ")}. What do you pay?`,
-      data: { options, correctIndex },
-      correctAnswer: correctIndex,
+      id, type: "monopoly-note-picker", category: "Monopoly Money",
+      prompt: `You are playing Business with ${r.owner}! You landed on ${r.property} — ${r.owner} owns it, so you owe ₹${r.rent.toLocaleString()} rent. Select the notes to give from your hand, and pick any change you expect back. (Hand: ${handDesc})`,
+      data: { price: r.rent, hand: r.hand, property: r.property, bankNotes: [1000, 500] },
+      correctAnswer: r.rent,
     };
   }
 
@@ -111,8 +115,8 @@ export function generateMonopolyQuestion(id: number): Question {
   })();
   return {
     id, type: "monopoly-note-picker", category: "Monopoly Money",
-    prompt: `You want to buy ${scenario.property} for ₹${scenario.price.toLocaleString()}. Tap notes from your hand to give the bank. (Hand: ${handDesc})`,
-    data: { price: scenario.price, hand: scenario.hand, property: scenario.property },
+    prompt: `You want to buy ${scenario.property} for ₹${scenario.price.toLocaleString()}. Select notes from your hand to give the bank, and pick the change you expect back. (Hand: ${handDesc})`,
+    data: { price: scenario.price, hand: scenario.hand, property: scenario.property, bankNotes: [10000, 1000, 500] },
     correctAnswer: scenario.price,
   };
 }

@@ -16,6 +16,19 @@
   margin: 0;
   color: #1a237e;
 }
+.summaryBtn {
+  background: #00897b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.summaryBtn:hover { background: #00695c; }
+
 .newQuizBtn {
   background: #7c4dff;
   color: white;

@@ -37,10 +37,19 @@ export function checkAnswer(question: Question, userAnswer: unknown): boolean {
     case "catchup-speed":
       return Number(userAnswer) === Number(question.correctAnswer);
     case "monopoly-mcq":
-    case "chess":
       return userAnswer === question.correctAnswer;
+    case "chess": {
+      const mode = (question.data as Record<string, unknown>).mode;
+      if (mode === "clickable") {
+        const validAnswers = (question.data as Record<string, unknown>).validAnswers;
+        if (Array.isArray(validAnswers)) {
+          return (validAnswers as string[]).includes(String(userAnswer).toUpperCase());
+        }
+      }
+      return userAnswer === question.correctAnswer;
+    }
     case "monopoly-note-picker":
-      return Number(userAnswer) >= Number(question.correctAnswer);
+      return Number(userAnswer) === Number(question.correctAnswer);
     case "crop-fraction":
       return String(userAnswer).trim() === String(question.correctAnswer).trim();
     case "clock-time": {

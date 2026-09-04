@@ -49,7 +49,7 @@ export function generateNotesArithmeticQuestion(id: number): Question {
     const have = s.n * s.denom;
     return {
       id, type: "notes-arithmetic", category: "Notes & Money",
-      prompt: `You have ${s.n} notes of ₹${s.denom.toLocaleString()} (= ₹${have.toLocaleString()} total). You need to pay ₹${s.pay.toLocaleString()}. How much MORE money do you need?`,
+      prompt: `You have ${s.n} notes of ₹${s.denom.toLocaleString()}. You need to pay ₹${s.pay.toLocaleString()}. How much MORE money do you need?`,
       data: { n: s.n, denom: s.denom, have, pay: s.pay },
       correctAnswer: s.more,
     };

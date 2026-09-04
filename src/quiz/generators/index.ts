@@ -3,7 +3,6 @@ import { generatePlaceValueQuestion } from "./placeValueGenerator";
 import { generatePencilFractionQuestion } from "./pencilFractionGenerator";
 import { generateOrderNumbersQuestion } from "./orderNumbersGenerator";
 import { generateSequenceQuestion } from "./sequenceGenerator";
-import { generateMinecraftBlocksQuestion } from "./minecraftBlocksGenerator";
 import { generateTrampolineQuestion } from "./trampolineGenerator";
 import { generateCheckCalculationQuestion } from "./checkCalculationGenerator";
 import { generateCropFractionQuestion } from "./cropFractionGenerator";
@@ -12,15 +11,12 @@ import { generateClockTimeQuestion } from "./clockTimeGenerator";
 import { generateDanceVideoQuestion } from "./danceVideoGenerator";
 import { generateNumberLineQuestion } from "./numberLineGenerator";
 import { generateSudokuQuestion } from "./sudokuGenerator";
-import { generateGraphApplesQuestion } from "./graphApplesGenerator";
 import { generateSubtractionQuestion } from "./subtractionGenerator";
 import { generateSpeedDistanceQuestion } from "./speedDistanceGenerator";
-import { generateRoundingQuestion } from "./roundingGenerator";
 import { generateMoneyQuestion } from "./moneyGenerator";
 import { generateComparisonQuestion } from "./comparisonGenerator";
 import { generateMissingOperatorQuestion } from "./missingOperatorGenerator";
 import { generateShapePerimeterQuestion } from "./shapePerimeterGenerator";
-import { generateEvenOddQuestion } from "./evenOddGenerator";
 import { generateMeasurementConvertQuestion } from "./measurementConvertGenerator";
 import { generateDoubleHalfQuestion } from "./doubleHalfGenerator";
 import { generateWordProblemMultiplyQuestion } from "./wordProblemMultiplyGenerator";
@@ -37,7 +33,6 @@ export const questionGenerators: GeneratorFn[] = [
   generatePencilFractionQuestion,
   generateOrderNumbersQuestion,
   generateSequenceQuestion,
-  generateMinecraftBlocksQuestion,
   generateTrampolineQuestion,
   generateCheckCalculationQuestion,
   generateCropFractionQuestion,
@@ -46,15 +41,12 @@ export const questionGenerators: GeneratorFn[] = [
   generateDanceVideoQuestion,
   generateNumberLineQuestion,
   generateSudokuQuestion,
-  generateGraphApplesQuestion,
   generateSubtractionQuestion,
   generateSpeedDistanceQuestion,
-  generateRoundingQuestion,
   generateMoneyQuestion,
   generateComparisonQuestion,
   generateMissingOperatorQuestion,
   generateShapePerimeterQuestion,
-  generateEvenOddQuestion,
   generateMeasurementConvertQuestion,
   generateDoubleHalfQuestion,
   generateWordProblemMultiplyQuestion,

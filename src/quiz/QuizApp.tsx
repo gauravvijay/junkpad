@@ -1,40 +1,41 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import type { Question, QuestionResult } from "./types";
 import { generateAllQuestions } from "./generators";
 import { getRenderer } from "./renderers";
 import { checkAnswer } from "./answerChecker";
+import QuizSummary from "./QuizSummary";
 import styles from "./QuizApp.module.css";
 
 const QuizApp: React.FC = () => {
   const [questions, setQuestions] = useState<Question[]>(() => generateAllQuestions());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<Record<number, QuestionResult>>({});
+  const [showSummary, setShowSummary] = useState(false);
+
+  const questionStartTimeRef = useRef<number>(Date.now());
 
   const question = questions[currentIndex];
   const totalQuestions = questions.length;
 
+  // Reset timer whenever we navigate to an unanswered question
+  useEffect(() => {
+    const q = questions[currentIndex];
+    if (q && !results[q.id]?.answered) {
+      questionStartTimeRef.current = Date.now();
+    }
+  }, [currentIndex]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleAnswer = useCallback(
     (answer: unknown) => {
       const correct = checkAnswer(question, answer);
+      const timeTaken = Math.round((Date.now() - questionStartTimeRef.current) / 1000);
       setResults((prev) => ({
         ...prev,
-        [question.id]: { questionId: question.id, answered: true, correct, userAnswer: answer },
+        [question.id]: { questionId: question.id, answered: true, correct, userAnswer: answer, timeTaken },
       }));
     },
     [question]
   );
-
-  const handlePrev = () => { if (currentIndex > 0) setCurrentIndex(currentIndex - 1); };
-  const handleNext = () => { if (currentIndex < totalQuestions - 1) setCurrentIndex(currentIndex + 1); };
-
-  const handleNewQuiz = () => {
-    setQuestions(generateAllQuestions());
-    setResults({});
-    setCurrentIndex(0);
-  };
-
-  const Renderer = getRenderer(question.type);
-  const result = results[question.id];
 
   const stats = useMemo(() => {
     const answered = Object.values(results).filter((r) => r.answered).length;
@@ -43,24 +44,65 @@ const QuizApp: React.FC = () => {
     return { answered, correctCount, wrongCount };
   }, [results]);
 
+  // Auto-show summary when all questions have been answered
+  useEffect(() => {
+    if (stats.answered === totalQuestions && totalQuestions > 0) {
+      setShowSummary(true);
+    }
+  }, [stats.answered, totalQuestions]);
+
+  const handlePrev = () => { if (currentIndex > 0) setCurrentIndex(currentIndex - 1); };
+  const handleNext = () => { if (currentIndex < totalQuestions - 1) setCurrentIndex(currentIndex + 1); };
+
+  const handleNewQuiz = () => {
+    setQuestions(generateAllQuestions());
+    setResults({});
+    setCurrentIndex(0);
+    setShowSummary(false);
+    questionStartTimeRef.current = Date.now();
+  };
+
+  const allAnswered = stats.answered === totalQuestions;
+
+  if (showSummary) {
+    return (
+      <QuizSummary
+        questions={questions}
+        results={results}
+        onNewQuiz={handleNewQuiz}
+        onReview={() => { setShowSummary(false); setCurrentIndex(0); }}
+      />
+    );
+  }
+
+  const Renderer = getRenderer(question.type);
+  const result = results[question.id];
+
   return (
     <div className={styles.quizApp}>
       <div className={styles.header}>
-        <h1 className={styles.title}>{"\uD83C\uDF93"} Maths Quiz</h1>
-        <button onClick={handleNewQuiz} className={styles.newQuizBtn}>
-          {"\uD83D\uDD04"} New Quiz
-        </button>
+        <h1 className={styles.title}>{"🎓"} Maths Quiz</h1>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {allAnswered && (
+            <button onClick={() => setShowSummary(true)} className={styles.summaryBtn}>
+              See Results
+            </button>
+          )}
+          <button onClick={handleNewQuiz} className={styles.newQuizBtn}>
+            {"🔄"} New Quiz
+          </button>
+        </div>
       </div>
 
       <div className={styles.scorecard}>
         <div className={styles.scoreItem}>
-          {"\uD83D\uDCDD"} <strong>{stats.answered}</strong>/{totalQuestions} answered
+          {"📝"} <strong>{stats.answered}</strong>/{totalQuestions} answered
         </div>
         <div className={`${styles.scoreItem} ${styles.scoreCorrect}`}>
-          {"\u2705"} <strong>{stats.correctCount}</strong> correct
+          {"✅"} <strong>{stats.correctCount}</strong> correct
         </div>
         <div className={`${styles.scoreItem} ${styles.scoreWrong}`}>
-          {"\u274C"} <strong>{stats.wrongCount}</strong> wrong
+          {"❌"} <strong>{stats.wrongCount}</strong> wrong
         </div>
       </div>
 
@@ -87,7 +129,7 @@ const QuizApp: React.FC = () => {
         </div>
         {result?.answered && (
           <div className={result.correct ? styles.resultCorrect : styles.resultWrong}>
-            {result.correct ? "\u2705 Correct!" : "\u274C Wrong"}
+            {result.correct ? "✅ Correct!" : "❌ Wrong"}
           </div>
         )}
         <div className={styles.questionPrompt}>{question.prompt}</div>
@@ -98,10 +140,10 @@ const QuizApp: React.FC = () => {
 
       <div className={styles.navButtons}>
         <button onClick={handlePrev} disabled={currentIndex === 0} className={styles.navBtn}>
-          {"\u25C0"} Previous
+          {"◀"} Previous
         </button>
         <button onClick={handleNext} disabled={currentIndex === totalQuestions - 1} className={styles.navBtn}>
-          Next {"\u25B6"}
+          Next {"▶"}
         </button>
       </div>
     </div>

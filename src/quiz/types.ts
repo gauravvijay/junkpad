@@ -14,6 +14,7 @@ export interface QuestionResult {
   answered: boolean;
   correct: boolean | null;
   userAnswer: unknown;
+  timeTaken?: number; // seconds
 }
 
 export interface QuestionRendererProps {
