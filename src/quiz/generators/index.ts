@@ -25,6 +25,10 @@ import { generateMeasurementConvertQuestion } from "./measurementConvertGenerato
 import { generateDoubleHalfQuestion } from "./doubleHalfGenerator";
 import { generateWordProblemMultiplyQuestion } from "./wordProblemMultiplyGenerator";
 import { generateSharingEquallyQuestion } from "./sharingEquallyGenerator";
+import { generateMonopolyQuestion } from "./monopolyGenerator";
+import { generateNotesArithmeticQuestion } from "./notesArithmeticGenerator";
+import { generateCatchUpSpeedQuestion } from "./catchUpSpeedGenerator";
+import { generateChessQuestion } from "./chessGenerator";
 
 export type GeneratorFn = (id: number) => Question;
 
@@ -55,6 +59,10 @@ export const questionGenerators: GeneratorFn[] = [
   generateDoubleHalfQuestion,
   generateWordProblemMultiplyQuestion,
   generateSharingEquallyQuestion,
+  generateMonopolyQuestion,
+  generateNotesArithmeticQuestion,
+  generateCatchUpSpeedQuestion,
+  generateChessQuestion,
 ];
 
 const QUESTIONS_PER_QUIZ = 20;

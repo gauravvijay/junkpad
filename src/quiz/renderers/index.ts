@@ -11,6 +11,8 @@ import SudokuRenderer from "./SudokuRenderer";
 import GraphApplesRenderer from "./GraphApplesRenderer";
 import SequenceRenderer from "./SequenceRenderer";
 import ShapePerimeterRenderer from "./ShapePerimeterRenderer";
+import ChessboardRenderer from "./ChessboardRenderer";
+import MonopolyNotePickerRenderer from "./MonopolyNotePickerRenderer";
 
 type RendererComponent = React.FC<QuestionRendererProps>;
 
@@ -41,6 +43,11 @@ export const rendererMap: Record<string, RendererComponent> = {
   "double-half": SimpleInputRenderer,
   "word-problem-multiply": SimpleInputRenderer,
   "sharing-equally": SimpleInputRenderer,
+  "monopoly-mcq": MultipleChoiceRenderer,
+  "monopoly-note-picker": MonopolyNotePickerRenderer,
+  "notes-arithmetic": SimpleInputRenderer,
+  "catchup-speed": SimpleInputRenderer,
+  "chess": ChessboardRenderer,
 };
 
 export function getRenderer(type: string): RendererComponent {
