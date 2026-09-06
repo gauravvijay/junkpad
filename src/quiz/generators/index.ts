@@ -18,7 +18,6 @@ import { generateComparisonQuestion } from "./comparisonGenerator";
 import { generateMissingOperatorQuestion } from "./missingOperatorGenerator";
 import { generateShapePerimeterQuestion } from "./shapePerimeterGenerator";
 import { generateMeasurementConvertQuestion } from "./measurementConvertGenerator";
-import { generateDoubleHalfQuestion } from "./doubleHalfGenerator";
 import { generateWordProblemMultiplyQuestion } from "./wordProblemMultiplyGenerator";
 import { generateSharingEquallyQuestion } from "./sharingEquallyGenerator";
 import { generateMonopolyQuestion } from "./monopolyGenerator";
@@ -48,7 +47,6 @@ export const questionGenerators: GeneratorFn[] = [
   generateMissingOperatorQuestion,
   generateShapePerimeterQuestion,
   generateMeasurementConvertQuestion,
-  generateDoubleHalfQuestion,
   generateWordProblemMultiplyQuestion,
   generateSharingEquallyQuestion,
   generateMonopolyQuestion,
