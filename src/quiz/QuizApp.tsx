@@ -4,13 +4,17 @@ import { generateAllQuestions } from "./generators";
 import { getRenderer } from "./renderers";
 import { checkAnswer } from "./answerChecker";
 import QuizSummary from "./QuizSummary";
+import { SettingsModal } from "./components/SettingsModal";
+import { loadConfig, saveConfig, resetConfig } from "./config";
 import styles from "./QuizApp.module.css";
 
 const QuizApp: React.FC = () => {
-  const [questions, setQuestions] = useState<Question[]>(() => generateAllQuestions());
+  const [selectedTopicIds, setSelectedTopicIds] = useState<string[]>(() => loadConfig());
+  const [questions, setQuestions] = useState<Question[]>(() => generateAllQuestions(loadConfig()));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [results, setResults] = useState<Record<number, QuestionResult>>({});
   const [showSummary, setShowSummary] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const questionStartTimeRef = useRef<number>(Date.now());
 
@@ -54,8 +58,29 @@ const QuizApp: React.FC = () => {
   const handlePrev = () => { if (currentIndex > 0) setCurrentIndex(currentIndex - 1); };
   const handleNext = () => { if (currentIndex < totalQuestions - 1) setCurrentIndex(currentIndex + 1); };
 
-  const handleNewQuiz = () => {
-    setQuestions(generateAllQuestions());
+  const handleNewQuiz = useCallback(() => {
+    setQuestions(generateAllQuestions(selectedTopicIds));
+    setResults({});
+    setCurrentIndex(0);
+    setShowSummary(false);
+    questionStartTimeRef.current = Date.now();
+  }, [selectedTopicIds]);
+
+  const handleSaveSettings = (newSelectedIds: string[]) => {
+    saveConfig(newSelectedIds);
+    setSelectedTopicIds(newSelectedIds);
+    setQuestions(generateAllQuestions(newSelectedIds));
+    setResults({});
+    setCurrentIndex(0);
+    setShowSummary(false);
+    setIsSettingsOpen(false);
+    questionStartTimeRef.current = Date.now();
+  };
+
+  const handleResetSettings = () => {
+    const defaults = resetConfig();
+    setSelectedTopicIds(defaults);
+    setQuestions(generateAllQuestions(defaults));
     setResults({});
     setCurrentIndex(0);
     setShowSummary(false);
@@ -83,6 +108,13 @@ const QuizApp: React.FC = () => {
       <div className={styles.header}>
         <h1 className={styles.title}>{"🎓"} Maths Quiz</h1>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button
+            onClick={() => setIsSettingsOpen(true)}
+            className={styles.settingsBtn}
+            title="Configure question topics"
+          >
+            {"⚙️"} Topics
+          </button>
           {allAnswered && (
             <button onClick={() => setShowSummary(true)} className={styles.summaryBtn}>
               See Results
@@ -146,6 +178,14 @@ const QuizApp: React.FC = () => {
           Next {"▶"}
         </button>
       </div>
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        initialSelectedIds={selectedTopicIds}
+        onClose={() => setIsSettingsOpen(false)}
+        onSave={handleSaveSettings}
+        onReset={handleResetSettings}
+      />
     </div>
   );
 };

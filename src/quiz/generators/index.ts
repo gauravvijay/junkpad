@@ -1,61 +1,20 @@
 import type { Question } from "../types";
-import { generatePlaceValueQuestion } from "./placeValueGenerator";
-import { generatePencilFractionQuestion } from "./pencilFractionGenerator";
-import { generateOrderNumbersQuestion } from "./orderNumbersGenerator";
-import { generateSequenceQuestion } from "./sequenceGenerator";
-import { generateTrampolineQuestion } from "./trampolineGenerator";
-import { generateCheckCalculationQuestion } from "./checkCalculationGenerator";
-import { generateCropFractionQuestion } from "./cropFractionGenerator";
-import { generateDivisionTeamsQuestion } from "./divisionTeamsGenerator";
-import { generateClockTimeQuestion } from "./clockTimeGenerator";
-import { generateDanceVideoQuestion } from "./danceVideoGenerator";
-import { generateNumberLineQuestion } from "./numberLineGenerator";
-import { generateSudokuQuestion } from "./sudokuGenerator";
-import { generateSubtractionQuestion } from "./subtractionGenerator";
-import { generateSpeedDistanceQuestion } from "./speedDistanceGenerator";
-import { generateMoneyQuestion } from "./moneyGenerator";
-import { generateComparisonQuestion } from "./comparisonGenerator";
-import { generateMissingOperatorQuestion } from "./missingOperatorGenerator";
-import { generateShapePerimeterQuestion } from "./shapePerimeterGenerator";
-import { generateMeasurementConvertQuestion } from "./measurementConvertGenerator";
-import { generateWordProblemMultiplyQuestion } from "./wordProblemMultiplyGenerator";
-import { generateSharingEquallyQuestion } from "./sharingEquallyGenerator";
-import { generateMonopolyQuestion } from "./monopolyGenerator";
-import { generateNotesArithmeticQuestion } from "./notesArithmeticGenerator";
-import { generateCatchUpSpeedQuestion } from "./catchUpSpeedGenerator";
-import { generateChessQuestion } from "./chessGenerator";
+import {
+  TOPIC_REGISTRY,
+  getAllTopicIds,
+  getTopicsByCategory,
+  getGeneratorsByIds,
+  type GeneratorFn,
+  type RegisteredTopic,
+} from "./registry";
 
-export type GeneratorFn = (id: number) => Question;
+export type { GeneratorFn, RegisteredTopic };
+export { TOPIC_REGISTRY, getAllTopicIds, getTopicsByCategory };
 
-export const questionGenerators: GeneratorFn[] = [
-  generatePlaceValueQuestion,
-  generatePencilFractionQuestion,
-  generateOrderNumbersQuestion,
-  generateSequenceQuestion,
-  generateTrampolineQuestion,
-  generateCheckCalculationQuestion,
-  generateCropFractionQuestion,
-  generateDivisionTeamsQuestion,
-  generateClockTimeQuestion,
-  generateDanceVideoQuestion,
-  generateNumberLineQuestion,
-  generateSudokuQuestion,
-  generateSubtractionQuestion,
-  generateSpeedDistanceQuestion,
-  generateMoneyQuestion,
-  generateComparisonQuestion,
-  generateMissingOperatorQuestion,
-  generateShapePerimeterQuestion,
-  generateMeasurementConvertQuestion,
-  generateWordProblemMultiplyQuestion,
-  generateSharingEquallyQuestion,
-  generateMonopolyQuestion,
-  generateNotesArithmeticQuestion,
-  generateCatchUpSpeedQuestion,
-  generateChessQuestion,
-];
+// Re-export questionGenerators for backwards compatibility
+export const questionGenerators: GeneratorFn[] = TOPIC_REGISTRY.map((t) => t.generator);
 
-const QUESTIONS_PER_QUIZ = 20;
+export const QUESTIONS_PER_QUIZ = 20;
 
 function shuffle<T>(arr: T[]): T[] {
   const result = [...arr];
@@ -66,8 +25,31 @@ function shuffle<T>(arr: T[]): T[] {
   return result;
 }
 
-export function generateAllQuestions(): Question[] {
-  // Shuffle all generators and pick QUESTIONS_PER_QUIZ of them
-  const picked = shuffle(questionGenerators).slice(0, QUESTIONS_PER_QUIZ);
-  return picked.map((gen, idx) => gen(idx + 1));
+/**
+ * Generates a quiz with QUESTIONS_PER_QUIZ questions based on selected topic IDs.
+ * If selectedIds is empty or invalid, falls back to all registered topics.
+ * If selected topics are fewer than QUESTIONS_PER_QUIZ, samples with replacement
+ * so the quiz is always complete with exactly QUESTIONS_PER_QUIZ questions.
+ */
+export function generateAllQuestions(selectedIds?: string[]): Question[] {
+  const pool = getGeneratorsByIds(selectedIds);
+  const activePool = pool.length > 0 ? pool : questionGenerators;
+
+  let chosenGenerators: GeneratorFn[];
+
+  if (activePool.length >= QUESTIONS_PER_QUIZ) {
+    chosenGenerators = shuffle(activePool).slice(0, QUESTIONS_PER_QUIZ);
+  } else {
+    // If fewer than QUESTIONS_PER_QUIZ, sample with replacement to reach 20 questions
+    chosenGenerators = [];
+    while (chosenGenerators.length < QUESTIONS_PER_QUIZ) {
+      const shuffled = shuffle(activePool);
+      for (const gen of shuffled) {
+        chosenGenerators.push(gen);
+        if (chosenGenerators.length === QUESTIONS_PER_QUIZ) break;
+      }
+    }
+  }
+
+  return chosenGenerators.map((gen, idx) => gen(idx + 1));
 }

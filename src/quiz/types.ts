@@ -24,3 +24,9 @@ export interface QuestionRendererProps {
 }
 
 export type QuestionGenerator = () => Question;
+
+export interface TopicOption {
+  id: string;
+  label: string;
+  category: string;
+}
