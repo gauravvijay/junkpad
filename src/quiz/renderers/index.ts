@@ -27,6 +27,8 @@ export const rendererMap: Record<string, RendererComponent> = {
   "crop-fraction": FractionInputRenderer,
   "division-teams": SimpleInputRenderer,
   "clock-time": ClockTimeRenderer,
+  "time-arithmetic": MultipleChoiceRenderer,
+  "elapsed-time": MultipleChoiceRenderer,
   "dance-video": SimpleInputRenderer,
   "number-line": NumberLineRenderer,
   "sudoku": SudokuRenderer,

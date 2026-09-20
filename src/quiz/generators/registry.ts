@@ -24,6 +24,8 @@ import { generateMonopolyQuestion } from "./monopolyGenerator";
 import { generateNotesArithmeticQuestion } from "./notesArithmeticGenerator";
 import { generateCatchUpSpeedQuestion } from "./catchUpSpeedGenerator";
 import { generateChessQuestion } from "./chessGenerator";
+import { generateTimeArithmeticQuestion } from "./timeArithmeticGenerator";
+import { generateElapsedTimeQuestion } from "./elapsedTimeGenerator";
 
 export type GeneratorFn = (id: number) => Question;
 
@@ -136,6 +138,18 @@ export const TOPIC_REGISTRY: RegisteredTopic[] = [
     label: "Telling Time",
     category: "Time & Measurement",
     generator: generateClockTimeQuestion,
+  },
+  {
+    id: "time-arithmetic",
+    label: "Time Arithmetic",
+    category: "Time & Measurement",
+    generator: generateTimeArithmeticQuestion,
+  },
+  {
+    id: "elapsed-time",
+    label: "Elapsed Time",
+    category: "Time & Measurement",
+    generator: generateElapsedTimeQuestion,
   },
   {
     id: "measurement-convert",

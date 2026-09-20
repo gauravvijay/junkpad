@@ -11,6 +11,8 @@ export function checkAnswer(question: Question, userAnswer: unknown): boolean {
     case "check-calculation":
     case "comparison":
     case "missing-operator":
+    case "time-arithmetic":
+    case "elapsed-time":
       return userAnswer === question.correctAnswer;
     case "order-numbers": {
       const correctArr = question.correctAnswer as number[];
