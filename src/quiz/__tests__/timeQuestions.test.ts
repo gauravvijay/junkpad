@@ -23,7 +23,18 @@ describe("Time Arithmetic & Elapsed Time Question Generators", () => {
         expect(q.type).toBe("time-arithmetic");
         expect(q.category).toBe("Time & Measurement");
 
-        const { options, correctIndex } = q.data as { options: string[]; correctIndex: number };
+        const { options, correctIndex, hour, minutes, ampm } = q.data as {
+          options: string[];
+          correctIndex: number;
+          hour: number;
+          minutes: number;
+          ampm: string;
+        };
+        expect(hour).toBeGreaterThanOrEqual(1);
+        expect(hour).toBeLessThanOrEqual(12);
+        expect(minutes).toBeGreaterThanOrEqual(0);
+        expect(minutes).toBeLessThan(60);
+        expect(["am", "pm"]).toContain(ampm);
         expect(options.length).toBe(4);
         expect(new Set(options).size).toBe(4); // No duplicate choices!
         expect(correctIndex).toBeGreaterThanOrEqual(0);

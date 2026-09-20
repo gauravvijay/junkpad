@@ -45,7 +45,7 @@ export function generateTimeArithmeticQuestion(id: number): Question {
   }
 
   const startTimeStr = `${startH}:${startM.toString().padStart(2, "0")} ${startAmPm}`;
-  const prompt = `If the time is currently ${startTimeStr}, what time will it be in ${durationPhrase}?`;
+  const prompt = `The clock shows the time right now (${startAmPm.toUpperCase()}). What time will it be in ${durationPhrase}?`;
 
   // Distractors based on typical childhood math pitfalls:
   const distractorsSet = new Set<string>();
@@ -94,6 +94,9 @@ export function generateTimeArithmeticQuestion(id: number): Question {
     category: "Time & Measurement",
     prompt,
     data: {
+      hour: startH,
+      minutes: startM,
+      ampm: startAmPm,
       options,
       correctIndex,
       startTime: startTimeStr,

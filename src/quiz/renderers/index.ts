@@ -13,6 +13,7 @@ import SequenceRenderer from "./SequenceRenderer";
 import ShapePerimeterRenderer from "./ShapePerimeterRenderer";
 import ChessboardRenderer from "./ChessboardRenderer";
 import MonopolyNotePickerRenderer from "./MonopolyNotePickerRenderer";
+import TimeArithmeticRenderer from "./TimeArithmeticRenderer";
 
 type RendererComponent = React.FC<QuestionRendererProps>;
 
@@ -27,7 +28,7 @@ export const rendererMap: Record<string, RendererComponent> = {
   "crop-fraction": FractionInputRenderer,
   "division-teams": SimpleInputRenderer,
   "clock-time": ClockTimeRenderer,
-  "time-arithmetic": MultipleChoiceRenderer,
+  "time-arithmetic": TimeArithmeticRenderer,
   "elapsed-time": MultipleChoiceRenderer,
   "dance-video": SimpleInputRenderer,
   "number-line": NumberLineRenderer,
